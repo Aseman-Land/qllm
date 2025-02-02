@@ -13,19 +13,18 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Sql)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Sql)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        chatsmodel.h chatsmodel.cpp
-        chatsession.h chatsession.cpp
-        modelscombobox.h modelscombobox.cpp
-        settingsdialog.h settingsdialog.cpp settingsdialog.ui
-        modelmanager.h modelmanager.cpp
-        modelmanagerwidgetitem.h modelmanagerwidgetitem.cpp modelmanagerwidgetitem.ui
+        src/main.cpp
+        src/mainwindow.cpp src/mainwindow.h src/mainwindow.ui
+        src/chatsmodel.h src/chatsmodel.cpp
+        src/chatsession.h src/chatsession.cpp
+        src/modelscombobox.h src/modelscombobox.cpp
+        src/settingsdialog.h src/settingsdialog.cpp src/settingsdialog.ui
+        src/modelmanager.h src/modelmanager.cpp
+        src/modelmanagerwidgetitem.h src/modelmanagerwidgetitem.cpp src/modelmanagerwidgetitem.ui
+        src/messageitem.h src/messageitem.cpp src/messageitem.ui
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(qllm
@@ -46,8 +45,6 @@ else()
     else()
         add_executable(qllm
             ${PROJECT_SOURCES}
-            messageitem.h messageitem.cpp
-            messageitem.ui
         )
     endif()
 endif()
