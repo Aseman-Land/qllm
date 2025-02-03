@@ -15,28 +15,14 @@ MessageItem::MessageItem(ChatSession::MessagePtr msg, ChatSession *session, QWid
 {
     ui->setupUi(this);
 
-    QColor color;
+    static const auto desktop = qgetenv("DESKTOP_SESSION");
+
+    ui->contentArea->setObjectName("contentArea_" + mMessage->role);
+
     if (mMessage->role == "user")
-    {
         setContentsMargins(4,30,4,4);
-        color = QColor(85, 170, 255);
-        color.setAlphaF(0.1);
-    }
     else
-    {
-        const auto plt = palette();
-        const auto textColor = plt.text().color();
-        const auto isDark = (textColor.redF() + textColor.greenF() + textColor.blueF()) / 3 > 0.5;
-        color = isDark? plt.window().color() : plt.base().color();
-        color.setAlphaF(1);
-
         setContentsMargins(4,4,4,4);
-    }
-
-    ui->contentArea->setStyleSheet(QString(R"(QFrame#contentArea {
-                                                background-color: rgba(%1, %2, %3, %4);
-                                                border-radius: 10px;
-                                            })").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alphaF()));
 
     refresh();
 }

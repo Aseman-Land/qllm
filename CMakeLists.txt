@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         src/modelmanager.h src/modelmanager.cpp
         src/modelmanagerwidgetitem.h src/modelmanagerwidgetitem.cpp src/modelmanagerwidgetitem.ui
         src/messageitem.h src/messageitem.cpp src/messageitem.ui
+        src/resources.qrc
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)

@@ -32,8 +32,8 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void on_sendBtn_clicked();
-    void on_listView_clicked(const QModelIndex &index);
-    void on_listView_customContextMenuRequested(const QPoint &pos);
+    void on_conversations_clicked(const QModelIndex &index);
+    void on_conversations_customContextMenuRequested(const QPoint &pos);
     void on_actionNew_Conversation_triggered();
     void on_actionSettings_triggered();
     void on_clearBtn_clicked();
@@ -53,6 +53,7 @@ protected:
     void initStyles();
 
     QString baseUrl() const;
+    QString readStyle(const QString &file) const;
 
 private:
     Ui::MainWindow *ui;

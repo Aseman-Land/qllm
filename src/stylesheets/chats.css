@@ -1,0 +1,10 @@
+
+QFrame#contentArea_user {
+    background-color: rgba(85, 170, 255, 0.1);
+    border-radius: 10px;
+}
+
+QFrame#contentArea_assistant {
+    background-color: color(base);
+    border-radius: 10px;
+}

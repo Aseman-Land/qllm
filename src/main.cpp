@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     app.setApplicationDisplayName("QLLM");
     app.setApplicationVersion("0.9.5");
     app.setOrganizationName("Aseman");
-    app.setWindowIcon(QIcon::fromTheme("applications-chat"));
+    app.setWindowIcon(QIcon(":/ui/icons/icon.svg"));
 
     // qDebug() << QStyleFactory::keys();
     // auto style = QStyleFactory::create("Adwaita-Dark");

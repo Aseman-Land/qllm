@@ -6,6 +6,7 @@
 #include <QSqlRecord>
 #include <QCryptographicHash>
 #include <QDebug>
+#include <QIcon>
 
 ChatsModel::ChatsModel(QObject *parent)
     : QAbstractItemModel{parent}
@@ -43,6 +44,8 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
     {
     case Qt::DisplayRole:
         return chat->name;
+    case Qt::DecorationRole:
+        return QIcon(":/ui/icons/icon.svg");
     }
 
     return QVariant();

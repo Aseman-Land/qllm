@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/ui">
+        <file>stylesheets/main.css</file>
+        <file>stylesheets/chats.css</file>
+        <file>icons/configure-dark.svg</file>
+        <file>icons/configure.svg</file>
+        <file>icons/list-add-dark.svg</file>
+        <file>icons/list-add.svg</file>
+        <file>icons/icon.svg</file>
+    </qresource>
+</RCC>

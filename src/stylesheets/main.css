@@ -1,0 +1,69 @@
+QFrame#headerFrame {
+    background-color: color(base);
+    border-bottom: 1px solid color(border);
+}
+
+QFrame#chatsFrame {
+    background-color: color(area);
+}
+
+QFrame#sendFrame {
+    background-color: color(base);
+    border-top: 1px solid color(border);
+}
+
+QWidget#centralwidget {
+    border-top: 1px solid color(border);
+}
+
+QWidget#messagesContents {
+    background-color: color(area);
+}
+
+QDockWidget::title#conversationsDock {
+    background-color: color(base);
+    border-top: 1px solid color(border);
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px 10px;
+}
+
+QDockWidget#conversationsDock {
+    border: 0px solid transparent;
+}
+
+QWidget#conversationsFrame {
+    background-color: color(base);
+}
+
+QMainWindow::separator {
+    background-color: color(border);
+    width: 1px;
+}
+
+QListView::item#conversations {
+    border-radius: 8px;
+    height: 36px;
+}
+
+QListView::item:selected#conversations {
+    background-color: color(highlight);
+}
+
+QListView::item:!selected:hover#conversations {
+    background-color: color(hover);
+}
+
+QPushButton#sendBtn {
+    background-color: transparent;
+    border: 0px solid transparent;
+    border-radius: 8px;
+}
+
+QPushButton:hover#sendBtn {
+    background-color: color(area);
+}
+
+QPushButton:pressed#sendBtn {
+    background-color: color(border);
+}

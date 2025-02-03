@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mSession, &ChatSession::messagesChanged, this, &MainWindow::print);
 
     ui->setupUi(this);
-    ui->listView->setModel(mChatsModel);
+    ui->conversations->setModel(mChatsModel);
     ui->prompt->installEventFilter(this);
 
     const auto model = mSettings->value("Ollama/model").toString();
@@ -50,11 +50,13 @@ MainWindow::MainWindow(QWidget *parent)
     settingsBtn->setAutoRaise(true);
     settingsBtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     settingsBtn->setDefaultAction(ui->actionSettings);
+    settingsBtn->setIconSize(QSize(24,24));
 
     auto modelsBtn = new QToolButton();
     modelsBtn->setAutoRaise(true);
     modelsBtn->setToolButtonStyle(Qt::ToolButtonIconOnly);
     modelsBtn->setDefaultAction(ui->actionManage_Models);
+    modelsBtn->setIconSize(QSize(24,24));
 
     auto toolbarWidget = new QWidget;
     auto toolbarLayout = new QHBoxLayout(toolbarWidget);
@@ -93,7 +95,7 @@ void MainWindow::send()
         return;
 
     mSession->sendPrompt(mModelsCombo->currentModel(), prompt);
-    ui->listView->setCurrentIndex(mChatsModel->indexOf(mSession->currentChat()));
+    ui->conversations->setCurrentIndex(mChatsModel->indexOf(mSession->currentChat()));
 }
 
 void MainWindow::on_sendBtn_clicked()
@@ -169,14 +171,14 @@ void MainWindow::closeEvent(QCloseEvent *e)
     e->accept();
 }
 
-void MainWindow::on_listView_clicked(const QModelIndex &index)
+void MainWindow::on_conversations_clicked(const QModelIndex &index)
 {
     mSession->setCurrentChat( mChatsModel->chatId(index) );
 }
 
-void MainWindow::on_listView_customContextMenuRequested(const QPoint &)
+void MainWindow::on_conversations_customContextMenuRequested(const QPoint &)
 {
-    const auto chatId = mChatsModel->chatId(ui->listView->currentIndex());
+    const auto chatId = mChatsModel->chatId(ui->conversations->currentIndex());
     if (!chatId)
         return;
 
@@ -258,21 +260,77 @@ void MainWindow::initBaseUrl()
     ui->secondSideModel->setBaseUrl(baseUrl());
 }
 
+QString MainWindow::readStyle(const QString &file) const
+{
+    QFile f(file);
+    f.open(QFile::ReadOnly);
+    auto styles = QString::fromUtf8(f.readAll());
+    f.close();
+
+    return styles;
+}
+
 void MainWindow::initStyles()
 {
+    const auto desktop = qgetenv("DESKTOP_SESSION");
+
+    QStringList files = {
+        ":/ui/stylesheets/chats.css",
+    };
+
+    const auto isPlasma = (desktop == "plasma");
+    if (!isPlasma)
+    {
+        files += ":/ui/stylesheets/main.css";
+
+        ui->headerFrame->setFrameShape(QFrame::Shape::NoFrame);
+        ui->headerFrame->setFrameShadow(QFrame::Shadow::Plain);
+        ui->headerFrame->setLineWidth(0);
+
+        ui->chatsFrame->setFrameShape(QFrame::Shape::NoFrame);
+        ui->chatsFrame->setFrameShadow(QFrame::Shadow::Plain);
+        ui->chatsFrame->setLineWidth(0);
+
+        ui->sendFrame->setFrameShape(QFrame::Shape::NoFrame);
+        ui->sendFrame->setFrameShadow(QFrame::Shadow::Plain);
+        ui->sendFrame->setLineWidth(0);
+
+        ui->conversationsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+        ui->conversationsDock->setAllowedAreas(Qt::LeftDockWidgetArea);
+    }
+
     const auto plt = palette();
     const auto textColor = plt.text().color();
     const auto isDark = (textColor.redF() + textColor.greenF() + textColor.blueF()) / 3 > 0.5;
     const auto areaColor = isDark? plt.base().color() : plt.window().color();
     const auto baseColor = isDark? plt.window().color() : plt.base().color();
+    const auto highlightColor = plt.highlight().color();
     const auto borderAlpha = isDark? 0.1 : 0.3;
 
-    ui->centralwidget->setStyleSheet(QStringLiteral("QWidget#centralwidget { border-top: 1px solid %2; }").arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
-    ui->headerFrame->setStyleSheet(QStringLiteral("QFrame#headerFrame { background-color: %1; border-bottom: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
-    ui->chatsFrame->setStyleSheet(QStringLiteral("QFrame#chatsFrame { background-color: %1; }").arg(areaColor.name()));
-    ui->messagesContents->setStyleSheet(QStringLiteral("QWidget#messagesContents { background-color: %1; }").arg(areaColor.name()));
-    ui->sendFrame->setStyleSheet(QStringLiteral("QFrame#sendFrame { background-color: %1; border-top: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
-    ui->conversationsFrame->setStyleSheet(QStringLiteral("QFrame#conversationsFrame { background-color: %1; border-right: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
+    if (isDark)
+    {
+        ui->actionSettings->setIcon(QIcon(":/ui/icons/configure-dark.svg"));
+        ui->actionManage_Models->setIcon(QIcon(":/ui/icons/configure-dark.svg"));
+        ui->actionNew_Conversation->setIcon(QIcon(":/ui/icons/list-add-dark.svg"));
+    }
+    else
+    {
+        ui->actionSettings->setIcon(QIcon(":/ui/icons/configure.svg"));
+        ui->actionManage_Models->setIcon(QIcon(":/ui/icons/configure.svg"));
+        ui->actionNew_Conversation->setIcon(QIcon(":/ui/icons/list-add.svg"));
+    }
+
+    QString styles;
+    for (const auto &f: files)
+        styles += readStyle(f) + '\n';
+
+    styles.replace("color(base)", isPlasma? areaColor.name() : baseColor.name());
+    styles.replace("color(area)", isPlasma? baseColor.name() : areaColor.name());
+    styles.replace("color(border)", COLOR_TO_RGBA_STR(textColor, borderAlpha));
+    styles.replace("color(highlight)", highlightColor.name());
+    styles.replace("color(hover)", COLOR_TO_RGBA_STR(highlightColor, 0.2));
+
+    setStyleSheet(styles);
 }
 
 void MainWindow::on_actionSettings_triggered()
