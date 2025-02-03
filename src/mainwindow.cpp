@@ -261,15 +261,15 @@ void MainWindow::initBaseUrl()
 void MainWindow::initStyles()
 {
     const auto plt = palette();
-    const auto windowColor = plt.window().color();
     const auto textColor = plt.text().color();
-    const auto baseColor = plt.base().color();
-    const auto isDark = (windowColor.redF() + windowColor.greenF() + windowColor.blueF()) / 3 < 0.5;
+    const auto isDark = (textColor.redF() + textColor.greenF() + textColor.blueF()) / 3 > 0.5;
+    const auto areaColor = isDark? plt.base().color() : plt.window().color();
+    const auto baseColor = isDark? plt.window().color() : plt.base().color();
     const auto borderAlpha = isDark? 0.1 : 0.3;
 
     ui->centralwidget->setStyleSheet(QStringLiteral("QWidget#centralwidget { border-top: 1px solid %2; }").arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
     ui->headerFrame->setStyleSheet(QStringLiteral("QFrame#headerFrame { background-color: %1; border-bottom: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
-    ui->chatsFrame->setStyleSheet(QStringLiteral("QFrame#chatWidget { background-color: %1; }").arg(windowColor.name()));
+    ui->chatsFrame->setStyleSheet(QStringLiteral("QFrame#chatsFrame { background-color: %1; }").arg(areaColor.name()));
     ui->sendFrame->setStyleSheet(QStringLiteral("QFrame#sendFrame { background-color: %1; border-top: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
     ui->conversationsFrame->setStyleSheet(QStringLiteral("QFrame#conversationsFrame { background-color: %1; border-right: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
 }

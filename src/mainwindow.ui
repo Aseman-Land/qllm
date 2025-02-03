@@ -315,6 +315,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: transparent;</string>
+           </property>
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
            </property>
