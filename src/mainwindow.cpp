@@ -74,7 +74,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mModelsCombo, static_cast<void(ModelsComboBox::*)(int)>(&ModelsComboBox::currentIndexChanged), this, &MainWindow::reloadPromptPlaceholder);
 
     restoreGeometry(mSettings->value("UI/geometry").toByteArray());
-    // restoreState(mSettings->value("UI/docks").toByteArray());
+
+#ifndef Q_OS_LINUX
+    restoreState(mSettings->value("UI/docks").toByteArray());
+#endif
 
     initStyles();
     initBaseUrl();
@@ -295,8 +298,8 @@ void MainWindow::initStyles()
         ui->sendFrame->setFrameShadow(QFrame::Shadow::Plain);
         ui->sendFrame->setLineWidth(0);
 
-        ui->conversationsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-        ui->conversationsDock->setAllowedAreas(Qt::LeftDockWidgetArea);
+        // ui->conversationsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+        // ui->conversationsDock->setAllowedAreas(Qt::LeftDockWidgetArea);
     }
 
     const auto plt = palette();

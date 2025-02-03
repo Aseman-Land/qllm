@@ -25,7 +25,8 @@ QDockWidget::title#conversationsDock {
     border-top: 1px solid color(border);
     font-weight: 700;
     margin: 0px;
-    padding: 0px 10px;
+    padding: 10px 10px;
+    height: 45px;
 }
 
 QDockWidget#conversationsDock {
