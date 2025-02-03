@@ -25,7 +25,9 @@ MessageItem::MessageItem(ChatSession::MessagePtr msg, ChatSession *session, QWid
     else
     {
         const auto plt = palette();
-        color = plt.base().color();
+        const auto textColor = plt.text().color();
+        const auto isDark = (textColor.redF() + textColor.greenF() + textColor.blueF()) / 3 > 0.5;
+        color = isDark? plt.window().color() : plt.base().color();
         color.setAlphaF(1);
 
         setContentsMargins(4,4,4,4);

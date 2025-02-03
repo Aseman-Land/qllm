@@ -270,6 +270,7 @@ void MainWindow::initStyles()
     ui->centralwidget->setStyleSheet(QStringLiteral("QWidget#centralwidget { border-top: 1px solid %2; }").arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
     ui->headerFrame->setStyleSheet(QStringLiteral("QFrame#headerFrame { background-color: %1; border-bottom: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
     ui->chatsFrame->setStyleSheet(QStringLiteral("QFrame#chatsFrame { background-color: %1; }").arg(areaColor.name()));
+    ui->messagesContents->setStyleSheet(QStringLiteral("QWidget#messagesContents { background-color: %1; }").arg(areaColor.name()));
     ui->sendFrame->setStyleSheet(QStringLiteral("QFrame#sendFrame { background-color: %1; border-top: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
     ui->conversationsFrame->setStyleSheet(QStringLiteral("QFrame#conversationsFrame { background-color: %1; border-right: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
 }

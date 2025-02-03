@@ -249,6 +249,9 @@
                  <height>526</height>
                 </rect>
                </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
                <layout class="QVBoxLayout" name="verticalLayout_4">
                 <property name="leftMargin">
                  <number>0</number>
