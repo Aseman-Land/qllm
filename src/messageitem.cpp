@@ -14,22 +14,27 @@ MessageItem::MessageItem(ChatSession::MessagePtr msg, ChatSession *session, QWid
     , mSession(session)
 {
     ui->setupUi(this);
+
+    QColor color;
     if (mMessage->role == "user")
     {
         setContentsMargins(4,30,4,4);
-        ui->contentArea->setStyleSheet(R"(QFrame#contentArea {
-                                            background-color: rgba(85, 170, 255, 0.1);
-                                            border-radius: 10px;
-                                        })");
+        color = QColor(85, 170, 255);
+        color.setAlphaF(0.1);
     }
     else
     {
+        const auto plt = palette();
+        color = plt.base().color();
+        color.setAlphaF(1);
+
         setContentsMargins(4,4,4,4);
-        ui->contentArea->setStyleSheet(R"(QFrame#contentArea {
-                                            background-color: rgba(0, 0, 0, 0.05);
-                                            border-radius: 10px;
-                                        })");
     }
+
+    ui->contentArea->setStyleSheet(QString(R"(QFrame#contentArea {
+                                                background-color: rgba(%1, %2, %3, %4);
+                                                border-radius: 10px;
+                                            })").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alphaF()));
 
     refresh();
 }

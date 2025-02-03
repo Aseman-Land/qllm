@@ -11,6 +11,8 @@
 #include <QLabel>
 #include <QToolButton>
 
+#define COLOR_TO_RGBA_STR(COLOR, ALPHA) QStringLiteral("rgba(%1, %2, %3, %4)").arg(COLOR.red()).arg(COLOR.green()).arg(COLOR.blue()).arg(ALPHA)
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -72,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     restoreGeometry(mSettings->value("UI/geometry").toByteArray());
     // restoreState(mSettings->value("UI/docks").toByteArray());
 
+    initStyles();
     initBaseUrl();
     reloadPromptPlaceholder();
 }
@@ -253,6 +256,22 @@ void MainWindow::initBaseUrl()
     mSession->setBaseUrl(baseUrl());
     mModelsCombo->setBaseUrl(baseUrl());
     ui->secondSideModel->setBaseUrl(baseUrl());
+}
+
+void MainWindow::initStyles()
+{
+    const auto plt = palette();
+    const auto windowColor = plt.window().color();
+    const auto textColor = plt.text().color();
+    const auto baseColor = plt.base().color();
+    const auto isDark = (windowColor.redF() + windowColor.greenF() + windowColor.blueF()) / 3 < 0.5;
+    const auto borderAlpha = isDark? 0.1 : 0.3;
+
+    ui->centralwidget->setStyleSheet(QStringLiteral("QWidget#centralwidget { border-top: 1px solid %2; }").arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
+    ui->headerFrame->setStyleSheet(QStringLiteral("QFrame#headerFrame { background-color: %1; border-bottom: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
+    ui->chatsFrame->setStyleSheet(QStringLiteral("QFrame#chatWidget { background-color: %1; }").arg(windowColor.name()));
+    ui->sendFrame->setStyleSheet(QStringLiteral("QFrame#sendFrame { background-color: %1; border-top: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
+    ui->conversationsFrame->setStyleSheet(QStringLiteral("QFrame#conversationsFrame { background-color: %1; border-right: 1px solid %2; }").arg(baseColor.name()).arg(COLOR_TO_RGBA_STR(textColor, borderAlpha)));
 }
 
 void MainWindow::on_actionSettings_triggered()

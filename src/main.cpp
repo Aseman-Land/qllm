@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("Aseman");
     app.setWindowIcon(QIcon::fromTheme("applications-chat"));
 
+    // qDebug() << QStyleFactory::keys();
     // auto style = QStyleFactory::create("Adwaita-Dark");
     // if (style)
     //     app.setStyle(style);

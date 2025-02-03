@@ -49,9 +49,10 @@ protected:
     void initSettings();
     void reloadPromptPlaceholder();
     void initAutoAnswer();
+    void initBaseUrl();
+    void initStyles();
 
     QString baseUrl() const;
-    void initBaseUrl();
 
 private:
     Ui::MainWindow *ui;
