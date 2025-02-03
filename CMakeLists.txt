@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Sql)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Sql)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network Sql Gui Qml Quick QuickControls2)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network Sql Gui Qml Quick QuickControls2)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         src/modelmanagerwidgetitem.h src/modelmanagerwidgetitem.cpp src/modelmanagerwidgetitem.ui
         src/messageitem.h src/messageitem.cpp src/messageitem.ui
         src/resources.qrc
+        src/qml.qrc
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -50,7 +51,17 @@ else()
     endif()
 endif()
 
-target_link_libraries(qllm PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Sql)
+target_link_libraries(
+    qllm
+    PRIVATE
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::Network
+        Qt${QT_VERSION_MAJOR}::Sql
+        Qt${QT_VERSION_MAJOR}::Gui
+        Qt${QT_VERSION_MAJOR}::Qml
+        Qt${QT_VERSION_MAJOR}::Quick
+        Qt${QT_VERSION_MAJOR}::QuickControls2
+)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
